@@ -3,9 +3,15 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        dr-racket-like-unicode-char
+        markdown-outdent-or-delete
+        paredit-backslash
+        paredit-forward-delete
+        paredit-forward-kill-word
         parinfer-backward-delete-char
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        mac-mwheel-scroll
         ))

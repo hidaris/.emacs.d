@@ -2,7 +2,9 @@
 (use-package web-mode
   :ensure t
   :defer t
-  :mode (("\\.html\\'" . web-mode)))
+  :mode (("\\.html\\'" . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2))
 
 (use-package css-mode                   ; CSS
   :defer t
@@ -16,12 +18,8 @@
   ;; Disable parser errors and strict warnings.  We have Flycheck 8)
   (validate-setq js2-mode-show-parse-errors nil
                  js2-mode-show-strict-warnings nil
-                 js2-highlight-level 3))  ; Try to highlight most ECMA built-ins
-
-(use-package rjsx-mode                  ; JSX mode
-  :ensure t
-  :defer t
-  :mode (("\\.jsx\\'" . rjsx-mode)))
+                 js2-highlight-level 3
+                 js2-basic-offset 2))  ; Try to highlight most ECMA built-ins
 
 (use-package js2-refactor               ; Refactor Javascript
   :ensure t
@@ -30,20 +28,6 @@
   (add-hook 'js2-mode-hook 'js2-refactor-mode)
   :config
   (js2r-add-keybindings-with-prefix "C-c m r"))
-
-(use-package tern                       ; Javascript IDE backend
-  :disabled t
-  :ensure t
-  :defer t
-  :init (add-hook 'js2-mode-hook #'tern-mode)
-  :config
-  ;; Don't generate port files
-  (add-to-list 'tern-command "--no-port-file" 'append))
-
-(use-package company-tern               ; Auto-completion for javascript
-  :ensure t
-  :after company
-  :config (add-to-list 'company-backends 'company-tern))
 
 ;;; Misc programming languages
 (use-package sh-script                  ; Shell scripts
@@ -55,4 +39,13 @@
    sh-indentation 2                     ; The basic indentation
    sh-basic-offset 2))                    ; The offset for nested indentation
 
+(use-package nginx-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode))
+  )
+
 (provide 'init-web)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-web.el ends here

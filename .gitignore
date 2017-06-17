@@ -2,6 +2,13 @@ elpa/
 savefile/
 snippets/
 auto-save-list/
+anaconda-mode/
 custom.el
 projectile-bookmarks.eld
 smex-items
+company-statistics-cache.el
+.lsp-session*
+mspyls/
+.dap-breakpoints
+eshell/
+transient/

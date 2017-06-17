@@ -1,17 +1,73 @@
-;;; Python
+;; init-go.el --- Initialize Python configurations.	-*- lexical-binding: t -*-
+
+;; Copyright (C) 2019 Hidaris
+
+;; Author: Hidaris <zuocool@gmail.com>
+;; URL: https://github.com/hidaris/.emacs.d
+
+;; This file is not part of GNU Emacs.
+;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+;; Floor, Boston, MA 02110-1301, USA.
+;;
+
+;;; Commentary:
+;;
+;; Python configurations.
+;;
+;;; Code:
+
 (use-package python
   :defer t
+  :init
+  (setq python-indent-offset 4)
   :config
   ;; PEP 8 compliant filling rules, 79 chars maximum
-  (add-hook 'python-mode-hook (lambda () (validate-setq fill-column 79)))
-  (add-hook 'python-mode-hook #'subword-mode))
+  (add-hook 'python-mode-hook #'subword-mode)
+  )
 
-(use-package elpy
+(use-package pyvenv
   :ensure t
-  :defer t
-  :init (with-eval-after-load 'python (elpy-enable))
+  :after python
   :config
-  (setenv "IPY_TEST_SIMPLE_PROMPT" "1")
-  (elpy-use-ipython))
+  (setenv "WORKON_HOME" (expand-file-name "~/anaconda3/envs/"))
+  )
+
+(require 'f)
+(require 'subr-x)
+
+(use-package lsp-python-ms
+  :ensure t
+  :demand
+  :config
+  (require 'projectile nil t)
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (let ((env_file (concat (projectile-project-root) ".conda-env")))
+                (if (f-exists? env_file)
+                    (let ((venv_name (f-read env_file 'utf-8)))
+                      (pyvenv-workon (string-trim venv_name))
+                      ;; (message (executable-find lsp-python-executable-cmd))
+                      (lsp-deferred))
+                  (progn
+                    (message "No conda env file found.")
+                    (setq lsp-python-executable-cmd "python3")
+                    (setq doom-modeline-env-python-executable "python3")
+                    (lsp-deferred)))))))
 
 (provide 'init-python)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-python.el ends here

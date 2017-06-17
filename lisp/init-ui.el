@@ -1,3 +1,11 @@
+;;; init-ui.el --- hidaris's Emacs : UI configuration.
+
+;;; Commentary:
+
+;; Basic configuration for Emacs UI.
+
+;;; Code:
+
 ;; the toolbar is just a waste of valuable screen estate
 ;; in a tty tool-bar-mode does not properly auto-load, and is
 ;; already disabled anyway
@@ -12,6 +20,9 @@
 
 ;; disable startup screen
 (setq inhibit-startup-screen t)
+
+;; disable mode-line mouseovers
+(setq mode-line-default-help-echo nil)
 
 ;; nice scrolling
 (when (fboundp 'scroll-bar-mode)
@@ -34,33 +45,34 @@
 
 ;;; Fonts
 (set-face-attribute 'default nil
-                    :family "Source Code Pro" :height 120)
+                    :family "Monaco" :height 146)
 (set-face-attribute 'variable-pitch nil
-                    :family "Fira Sans" :height 130 :weight 'regular)
+                    :family "Fira Sans" :height 146 :weight 'regular)
 
 (use-package face-remap                 ; Face remapping
   :bind (("C-c w z" . text-scale-adjust)))
 
-(use-package zenburn-theme
+(use-package doom-themes
   :ensure t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'doom-solarized-light t)
+  (let ((line (face-attribute 'mode-line :underline)))
+    (set-face-attribute 'mode-line          nil :overline   line)
+    (set-face-attribute 'mode-line-inactive nil :overline   line)
+    (set-face-attribute 'mode-line-inactive nil :underline  line)
+    (set-face-attribute 'mode-line          nil :box        nil)
+    (set-face-attribute 'mode-line-inactive nil :box        nil)
+    (set-face-attribute 'mode-line-inactive nil :background "#f9f2d9"))
+  )
+
 
 ;; Configure a reasonable fill column, indicate it in the buffer and enable
 ;; automatic filling
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook #'auto-fill-mode)
-(diminish 'auto-fill-function " Ⓕ")
+;; (add-hook 'text-mode-hook #'auto-fill-mode)
+;; (diminish 'auto-fill-function " Ⓕ")
 
 (bind-key "C-c x i" #'indent-region)
-
-(use-package frame                      ; Frames
-  :bind (("C-c w F" . toggle-frame-fullscreen))
-  :init (progn
-          ;; Kill `suspend-frame'
-          (global-set-key (kbd "C-z") nil)
-          (global-set-key (kbd "C-x C-z") nil))
-  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
 ;;; Buffer, Windows and Frames
 (validate-setq
@@ -72,51 +84,32 @@
  window-combination-resize t)
 
 (setq-default line-spacing 0.2)         ; A bit more spacing between lines
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . light))
 
-(use-package spaceline-config           ; A beautiful mode line
-  :ensure spaceline
-  :defer 0.5
-  :config
-  (spaceline-compile
-    'lunaryorn
-    ;; Left side of the mode line (all the important stuff)
-    '(((buffer-modified buffer-size input-method) :face highlight-face)
-      anzu
-      '(buffer-id remote-host buffer-encoding-abbrev)
-      ((point-position line-column buffer-position selection-info)
-       :separator " | ")
-      major-mode
-      process
-      (flycheck-error flycheck-warning flycheck-info)
-      (python-pyvenv :fallback python-pyenv)
-      ((which-function projectile-root) :separator " @ ")
-      ((minor-modes :separator spaceline-minor-modes-separator) :when active))
-    ;; Right segment (the unimportant stuff)
-    '((version-control :when active)))
-
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-lunaryorn)))))
-
-(use-package powerline                  ; The work-horse of Spaceline
+(use-package visual-fill-column         ; Fill column wrapping for Visual Line
+                                        ; Mode
   :ensure t
-  :after spaceline-config
-  :config (validate-setq
-           powerline-height (truncate (* 1.0 (frame-char-height)))
-           powerline-default-separator 'utf-8))
-
-(use-package which-func                 ; Current function name
-  :defer 1
+  :defer t
+  :bind (("C-c t v" . visual-fill-column-mode))
+  :init
+  ;; Turn on whenever visual line mode is on, and in all text or prog mode
+  ;; buffers to get centered text
+  (dolist (hook '(visual-line-mode-hook
+                  prog-mode-hook
+                  text-mode-hook))
+    (add-hook hook #'visual-fill-column-mode))
+  ;; Center text by default, and move the fringes close to the text.
   :config
-  (which-function-mode)
-  (validate-setq
-   which-func-unknown "⊥"               ; The default is really boring…
-   which-func-format
-   `((:propertize (" ➤ " which-func-current)
-                  local-map ,which-func-keymap
-                  face which-func
-                  mouse-face mode-line-highlight
-                  help-echo "mouse-1: go to beginning\n\
-mouse-2: toggle rest visibility\n\
-mouse-3: go to end"))))
+  (setq-default visual-fill-column-center-text t
+                visual-fill-column-fringes-outside-margins nil)
+  ;; Split windows vertically despite large margins, because Emacs otherwise
+  ;; refuses to vertically split windows with large margins
+  (validate-setq split-window-preferred-function
+                 #'visual-fill-column-split-window-sensibly))
+
 
 ;; highlight the current line
 (use-package hl-line
@@ -127,4 +120,18 @@ mouse-3: go to end"))))
   :config
   (which-key-mode +1))
 
+(use-package doom-modeline
+  :ensure t
+  :defer t
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-github nil)
+  (setq doom-modeline-buffer-file-name-style 'file-name))
+
+(use-package all-the-icons
+  :ensure t)
+
 (provide 'init-ui)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-ui.el ends here

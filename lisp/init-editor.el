@@ -1,9 +1,17 @@
+;;; init-editor.el --- hidaris's Emacs : Editor configuration.
+
+;;; Commentary:
+
+;; Basic configuration for Emacs Editor.
+
+;;; Code:
+
 ;; Emacs modes typically provide a standard means to change the
 ;; indentation width -- eg. c-basic-offset: use that to adjust your
 ;; personal indentation width, while maintaining the style (and
 ;; meaning) of any files you load.
 (setq-default indent-tabs-mode nil)   ;; don't use tabs to indent
-(setq-default tab-width 8)            ;; but maintain correct appearance
+(setq-default tab-width 4)            ;; but maintain correct appearance
 
 ;; Newline at end of file
 (setq require-final-newline t)
@@ -44,18 +52,8 @@
 (global-set-key (kbd "C-x \\") #'align-regexp)
 
 ;; extend the help commands
-(define-key 'help-command (kbd "C-f") #'find-function)
-(define-key 'help-command (kbd "C-k") #'find-function-on-key)
-(define-key 'help-command (kbd "C-v") #'find-variable)
-(define-key 'help-command (kbd "C-l") #'find-library)
 
 (define-key 'help-command (kbd "C-i") #'info-display-manual)
-
-;; misc useful keybindings
-(global-set-key (kbd "s-<") #'beginning-of-buffer)
-(global-set-key (kbd "s->") #'end-of-buffer)
-(global-set-key (kbd "s-q") #'fill-paragraph)
-(global-set-key (kbd "s-x") #'execute-extended-command)
 
 ;; smart tab behavior - indent or complete
 (setq tab-always-indent 'complete)
@@ -78,7 +76,8 @@
 (use-package rainbow-mode
   :ensure t
   :config
-  (add-hook 'prog-mode-hook #'rainbow-mode))
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+  :diminish (rainbow-mode . " ⓡ"))
 
 (use-package whitespace
   :init
@@ -87,32 +86,29 @@
   (add-hook 'before-save-hook #'whitespace-cleanup)
   :config
   (setq whitespace-line-column 80) ;; limit line length
-  (setq whitespace-style '(face tabs empty trailing lines-tail)))
+  (setq whitespace-style '(face tabs empty trailing lines-tail))
+  :diminish (whitespace-mode . " ⓦ"))
 
-(use-package parinfer
+(use-package editorconfig
   :ensure t
-  :bind
-  (("C-c ," . parinfer-toggle-mode)
-   ("M-r" . parinfer-raise-sexp)
-   ;; ("<tab>" . parinfer-smart-tab:dwim-right-or-complete)
-   ("S-<tab>" . parinfer-smart-tab:dwim-left))
+  :config
+  (editorconfig-mode 1)
+  :diminish (editorconfig-mode . " ⓔ"))
+
+(use-package paredit
+  :ensure t
   :init
   (progn
-    (setq parinfer-extensions
-          '(defaults       ; should be included.
-            pretty-parens  ; different paren styles for different modes.
-            paredit        ; Introduce some paredit commands.
-            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-            smart-yank))   ; Yank behavior depend on mode.
-    (setq parinfer-lighters '(" Parinfer:Indent" . "Parinfer:Paren"))
-    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'racket-mode-hook #'parinfer-mode)
-    (add-hook 'racket-repl-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-interaction-mode-hook #'parinfer-mode)
-    (add-hook 'ielm-mode-hook #'parinfer-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook #'parinfer-mode)))
+    (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+    (add-hook 'scheme-mode-hook #'paredit-mode)
+    (add-hook 'racket-mode-hook #'paredit-mode)
+    (add-hook 'racket-repl-mode-hook #'paredit-mode)
+    (add-hook 'lisp-mode-hook #'paredit-mode)
+    (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
+    (add-hook 'ielm-mode-hook #'paredit-mode)
+    (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
+  :diminish (paredit-mode . " ⓟ")
+  )
 
 (use-package smartparens
   :ensure t
@@ -123,9 +119,15 @@
   :defer t
   :init
   (add-hook 'web-mode-hook #'smartparens-mode)
+  (add-hook 'restclient-mode #'smartparens-mode)
   (add-hook 'python-mode-hook #'smartparens-mode)
+  (add-hook 'ruby-mode-hook #'smartparens-mode)
+  (add-hook 'idris-mode-hook #'smartparens-mode)
+  (add-hook 'idris-repl-mode-hook #'smartparens-mode)
+  (add-hook 'inferior-python-mode #'smartparens-mode)
   :config
-  (require 'smartparens-config))
+  (require 'smartparens-config)
+  :diminish (smartparens-mode . " ⓟ"))
 
 (use-package paren
   :config
@@ -134,7 +136,8 @@
 (use-package abbrev
   :config
   (setq save-abbrevs 'silently)
-  (setq-default abbrev-mode t))
+  (setq-default abbrev-mode t)
+  :diminish (abbrev-mode . " ⓐ"))
 
 (use-package windmove
   :config
@@ -198,3 +201,6 @@
          ([remap kill-whole-line] . crux-kill-whole-line)))
 
 (provide 'init-editor)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-editor.el ends here

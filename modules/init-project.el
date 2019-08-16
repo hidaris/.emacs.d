@@ -7,7 +7,7 @@
 (use-package diff-hl
   :ensure t
   :defer t
-  :after visual-fill-column
+  :after olivetti-mode
   :config
   (global-diff-hl-mode +1)
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)

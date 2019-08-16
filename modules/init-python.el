@@ -50,6 +50,7 @@
 
 (use-package lsp-python-ms
   :ensure t
+  :after python
   :demand
   :config
   (require 'projectile nil t)

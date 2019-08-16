@@ -45,7 +45,7 @@
 
 ;;; Fonts
 (set-face-attribute 'default nil
-                    :family "Monaco" :height 146)
+                    :family "Monaco" :height 180)
 (set-face-attribute 'variable-pitch nil
                     :family "Fira Sans" :height 146 :weight 'regular)
 
@@ -85,31 +85,19 @@
 
 (setq-default line-spacing 0.2)         ; A bit more spacing between lines
 (add-to-list 'default-frame-alist '(fullscreen . fullheight))
-(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(width . 90))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
 
-(use-package visual-fill-column         ; Fill column wrapping for Visual Line
-                                        ; Mode
+(use-package olivetti
   :ensure t
   :defer t
-  :bind (("C-c t v" . visual-fill-column-mode))
   :init
-  ;; Turn on whenever visual line mode is on, and in all text or prog mode
-  ;; buffers to get centered text
   (dolist (hook '(visual-line-mode-hook
                   prog-mode-hook
                   text-mode-hook))
-    (add-hook hook #'visual-fill-column-mode))
-  ;; Center text by default, and move the fringes close to the text.
-  :config
-  (setq-default visual-fill-column-center-text t
-                visual-fill-column-fringes-outside-margins nil)
-  ;; Split windows vertically despite large margins, because Emacs otherwise
-  ;; refuses to vertically split windows with large margins
-  (validate-setq split-window-preferred-function
-                 #'visual-fill-column-split-window-sensibly))
-
+    (add-hook hook #'olivetti-mode))
+  )
 
 ;; highlight the current line
 (use-package hl-line
@@ -126,7 +114,10 @@
   :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-github nil)
-  (setq doom-modeline-buffer-file-name-style 'file-name))
+  (setq doom-modeline-buffer-file-name-style 'file-name)
+  (setq doom-modeline-height 1)
+  (set-face-attribute 'mode-line nil :height 160)
+  (set-face-attribute 'mode-line-inactive nil :height 160))
 
 (use-package all-the-icons
   :ensure t)

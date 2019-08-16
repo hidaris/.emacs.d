@@ -121,6 +121,7 @@
   (add-hook 'web-mode-hook #'smartparens-mode)
   (add-hook 'restclient-mode #'smartparens-mode)
   (add-hook 'python-mode-hook #'smartparens-mode)
+  (add-hook 'go-mode-hook #'smartparens-mode)
   (add-hook 'ruby-mode-hook #'smartparens-mode)
   (add-hook 'idris-mode-hook #'smartparens-mode)
   (add-hook 'idris-repl-mode-hook #'smartparens-mode)

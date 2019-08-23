@@ -26,6 +26,7 @@
   (setq save-place-file (expand-file-name "saveplace" hidaris-savefile-dir)))
 
 (use-package savehist
+  :defer t
   :config
   (setq savehist-additional-variables
         ;; search entries
@@ -38,6 +39,7 @@
   (savehist-mode +1))
 
 (use-package recentf
+  :defer t
   :config
   (validate-setq
    recentf-save-file (expand-file-name "recentf" hidaris-savefile-dir)
@@ -97,12 +99,14 @@
 
 (use-package super-save
   :ensure t
+  :defer t
   :config
   (super-save-mode +1)
   :diminish super-save-mode)
 
 (use-package undo-tree
   :ensure t
+  :defer t
   :config
   ;; autosave the undo-tree history
   (setq undo-tree-history-directory-alist

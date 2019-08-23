@@ -96,15 +96,16 @@
   (dolist (hook '(visual-line-mode-hook
                   prog-mode-hook
                   text-mode-hook))
-    (add-hook hook #'olivetti-mode))
-  )
+    (add-hook hook #'olivetti-mode)))
 
 ;; highlight the current line
 (use-package hl-line
+  :defer t
   :init (global-hl-line-mode 1))
 
 (use-package which-key
   :ensure t
+  :defer t
   :config
   (which-key-mode +1))
 
@@ -120,7 +121,8 @@
   (set-face-attribute 'mode-line-inactive nil :height 160))
 
 (use-package all-the-icons
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (provide 'init-ui)
 

@@ -2,6 +2,7 @@
 
 (use-package tuareg
   :ensure t
+  :defer t
   :config
   (progn
     ;; See README

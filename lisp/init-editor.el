@@ -60,6 +60,7 @@
 
 (use-package easy-kill
   :ensure t
+  :defer t
   :config
   (global-set-key [remap kill-ring-save] 'easy-kill))
 
@@ -69,17 +70,14 @@
   (([(meta shift up)] . move-text-up)
    ([(meta shift down)] . move-text-down)))
 
-(use-package rainbow-delimiters
-  :ensure t
-  :defer t)
-
 (use-package rainbow-mode
+  :defer t
   :ensure t
   :config
-  (add-hook 'prog-mode-hook #'rainbow-mode)
-  :diminish (rainbow-mode . " ⓡ"))
+  (add-hook 'prog-mode-hook #'rainbow-mode))
 
 (use-package whitespace
+  :defer t
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -91,12 +89,13 @@
 
 (use-package editorconfig
   :ensure t
+  :defer t
   :config
-  (editorconfig-mode 1)
-  :diminish (editorconfig-mode . " ⓔ"))
+  (editorconfig-mode 1))
 
 (use-package paredit
   :ensure t
+  :defer t
   :init
   (progn
     (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
@@ -106,9 +105,7 @@
     (add-hook 'lisp-mode-hook #'paredit-mode)
     (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
     (add-hook 'ielm-mode-hook #'paredit-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
-  :diminish (paredit-mode . " ⓟ")
-  )
+    (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)))
 
 (use-package smartparens
   :ensure t
@@ -116,7 +113,6 @@
          ("M-q"       . sp-indent-defun)
          ("C-<left>"  . sp-backward-barf-sexp)
          ("C-<right>" . sp-backward-slurp-sexp))
-  :defer t
   :init
   (add-hook 'web-mode-hook #'smartparens-mode)
   (add-hook 'restclient-mode #'smartparens-mode)
@@ -127,8 +123,7 @@
   (add-hook 'idris-repl-mode-hook #'smartparens-mode)
   (add-hook 'inferior-python-mode #'smartparens-mode)
   :config
-  (require 'smartparens-config)
-  :diminish (smartparens-mode . " ⓟ"))
+  (require 'smartparens-config))
 
 (use-package paren
   :config
@@ -137,8 +132,7 @@
 (use-package abbrev
   :config
   (setq save-abbrevs 'silently)
-  (setq-default abbrev-mode t)
-  :diminish (abbrev-mode . " ⓐ"))
+  (setq-default abbrev-mode t))
 
 (use-package windmove
   :config

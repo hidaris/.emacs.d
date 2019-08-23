@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;;; initialization
+
 (when (version< emacs-version "26")
   (warn "This conf needs Emacs version >= 26, but this is %s!" emacs-version))
 
@@ -85,7 +86,5 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; (load-file (let ((coding-system-for-read 'utf-8))
-;;              (shell-command-to-string "agda-mode locate")))
 
 ;;; init.el ends here

@@ -35,8 +35,7 @@
   (setq python-indent-offset 4)
   :config
   ;; PEP 8 compliant filling rules, 79 chars maximum
-  (add-hook 'python-mode-hook #'subword-mode)
-  )
+  (add-hook 'python-mode-hook #'subword-mode))
 
 (use-package pyvenv
   :ensure t
@@ -61,12 +60,16 @@
                     (let ((venv_name (f-read env_file 'utf-8)))
                       (pyvenv-workon (string-trim venv_name))
                       ;; (message (executable-find lsp-python-executable-cmd))
-                      (lsp-deferred))
+                      (lsp-deferred)
+                      (push '(company-lsp :with company-tabnine :separate) company-backends)
+                      )
                   (progn
                     (message "No conda env file found.")
                     (setq lsp-python-executable-cmd "python3")
                     (setq doom-modeline-env-python-executable "python3")
-                    (lsp-deferred)))))))
+                    (lsp-deferred)
+                    (push '(company-lsp :with company-tabnine :separate) company-backends)
+                    ))))))
 
 (provide 'init-python)
 

@@ -37,10 +37,25 @@
   (add-hook 'racket-repl-mode-hook 'paren-face-mode)
   )
 
-;;;_ , idris-mode
-(use-package idris-mode
-  :ensure t
-  :defer t)
+;; (use-package agda2-mode
+;;   ;; This declaration depends on the load-path established by agda-input.
+;;   :mode "\\.agda\\'"
+;;   :bind (:map agda2-mode-map
+;;               ("C-c C-i" . agda2-insert-helper-function))
+;;   :defer t
+;;   :preface
+;;   (defun agda2-insert-helper-function (&optional prefix)
+;;     (interactive "P")
+;;     (let ((func-def (with-current-buffer "*Agda information*"
+;;                       (buffer-string))))
+;;       (save-excursion
+;;         (forward-paragraph)
+;;         (let ((name (car (split-string func-def " "))))
+;;           (insert "  where\n    " func-def "    " name " x = ?\n")))))
+;;   :init
+;;   (load-file (let ((coding-system-for-read 'utf-8))
+;;                (shell-command-to-string "/usr/local/bin/agda-mode locate"))))
+
 
 (provide 'init-racket)
 

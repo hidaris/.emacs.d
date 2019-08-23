@@ -32,14 +32,16 @@
 (use-package go-mode
   :ensure t
   :mode (("\\.go\\'" . go-mode))
-  ;; :hook ((before-save . gofmt-before-save))
   :config
   (add-hook 'go-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'gofmt-before-save)
             (setq tab-width 4)
             (setq indent-tabs-mode t)
-            (lsp-deferred)))
+            (lsp-deferred)
+            ;; (push '(company-lsp :with company-tabnine :separate)
+            ;;       company-backends)
+            ))
 
   ;; Format with `goimports' if possible, otherwise using `gofmt'
   (when (executable-find "goimports")

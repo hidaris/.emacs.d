@@ -1,6 +1,5 @@
 (use-package company               ; Graphical (auto-)completion
   :ensure t
-  :defer 0.2
   :bind
   (:map company-active-map
         ("C-n" . company-select-next)
@@ -19,6 +18,7 @@
 
 (use-package company-box
   :ensure t
+  :defer t
   :init (setq company-box-icons-alist 'company-box-icons-all-the-icons)
   :config
   (add-hook 'company-mode-hook

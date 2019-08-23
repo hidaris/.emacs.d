@@ -42,5 +42,9 @@
   (add-to-list 'company-backends #'company-lsp)
   )
 
+(use-package company-tabnine
+  :ensure t
+  :defer t)
+
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

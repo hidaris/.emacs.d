@@ -38,11 +38,11 @@
 ; isearch with overview
 (use-package swiper
   :ensure t
-  :defer t
   :bind (([remap isearch-forward] . swiper)))
 
 (use-package smex
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package anzu
   :ensure t

@@ -119,6 +119,7 @@
   (add-hook 'python-mode-hook #'smartparens-mode)
   (add-hook 'go-mode-hook #'smartparens-mode)
   (add-hook 'ruby-mode-hook #'smartparens-mode)
+  (add-hook 'rust-mode-hook #'smartparens-mode)
   (add-hook 'idris-mode-hook #'smartparens-mode)
   (add-hook 'idris-repl-mode-hook #'smartparens-mode)
   (add-hook 'inferior-python-mode #'smartparens-mode)

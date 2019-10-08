@@ -1,4 +1,4 @@
-;; init-go.el --- Initialize Python configurations.	-*- lexical-binding: t -*-
+;; init-python.el --- Initialize Python configurations.	-*- lexical-binding: t -*-
 
 ;; Copyright (C) 2019 Hidaris
 
@@ -61,14 +61,18 @@
                       (pyvenv-workon (string-trim venv_name))
                       ;; (message (executable-find lsp-python-executable-cmd))
                       (lsp-deferred)
-                      (push '(company-lsp :with company-tabnine :separate) company-backends)
+                      (push '(company-lsp
+                              :with company-tabnine :separate)
+                            company-backends)
                       )
                   (progn
                     (message "No conda env file found.")
                     (setq lsp-python-executable-cmd "python3")
                     (setq doom-modeline-env-python-executable "python3")
                     (lsp-deferred)
-                    (push '(company-lsp :with company-tabnine :separate) company-backends)
+                    (push '(company-lsp
+                            :with company-tabnine :separate)
+                          company-backends)
                     ))))))
 
 (provide 'init-python)

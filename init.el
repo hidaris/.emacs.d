@@ -79,6 +79,7 @@
 (require 'init-project)
 (require 'init-ocaml)
 (require 'init-coq)
+(require 'init-rust)
 ;; (require 'init-agda)
 
 ;; config changes made through the customize UI will be stored here

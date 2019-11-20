@@ -93,9 +93,8 @@
   :ensure t
   :defer t
   :init
-  (dolist (hook '(visual-line-mode-hook
-                  prog-mode-hook
-                  text-mode-hook))
+  (dolist (hook '(text-mode-hook
+                  racket-mode-hook))
     (add-hook hook #'olivetti-mode)))
 
 ;; highlight the current line

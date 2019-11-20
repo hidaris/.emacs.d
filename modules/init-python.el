@@ -41,7 +41,7 @@
   :ensure t
   :after python
   :config
-  (setenv "WORKON_HOME" (expand-file-name "~/anaconda3/envs/"))
+  (setenv "WORKON_HOME" (expand-file-name "~/miniconda3/envs/"))
   )
 
 (require 'f)
@@ -50,6 +50,8 @@
 (use-package lsp-python-ms
   :ensure t
   :after python
+  :init
+  (setq lsp-python-ms-parse-dot-env-enabled nil)
   :demand
   :config
   (require 'projectile nil t)

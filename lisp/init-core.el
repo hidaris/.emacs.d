@@ -81,7 +81,7 @@
   :defer 0.3
   :config
   (when (memq window-system '(mac ns x))
-    ;; (setq exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-arguments '("-l"))
     (exec-path-from-shell-initialize)))
 
 ;; (use-package flyspell

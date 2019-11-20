@@ -2,10 +2,11 @@
   :ensure t
   :config
   ;; fix pyls problem
-  (setq create-lockfiles nil)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-message-project-root-warning t)
-  (setq lsp-enable-snippet nil)
+  ;; (setq create-lockfiles nil)
+  (setq lsp-prefer-flymake nil
+        lsp-auto-guess-root t
+        lsp-message-project-root-warning t
+        lsp-enable-snippet nil)
   )
 
 (use-package lsp-ui
@@ -36,7 +37,7 @@
   ;; don't filter results on the client side.
   (setq company-transformers nil
         company-lsp-async t
-        company-lsp-cache-candidates nil
+        company-lsp-cache-candidates 'auto
         company-lsp-enable-snippet nil)
   :config
   (add-to-list 'company-backends #'company-lsp)

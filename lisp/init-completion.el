@@ -1,19 +1,19 @@
 (use-package company               ; Graphical (auto-)completion
   :ensure t
+  :hook
+  (after-init . global-company-mode)
   :bind
   (:map company-active-map
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous))
   :config
-  (global-company-mode)
-
   (validate-setq
-   company-idle-delay 0
+   company-idle-delay .5
    company-tooltip-align-annotations t
    company-tooltip-flip-when-above t
    ;; Easy navigation to candidates with M-<n>
    company-show-numbers t
-   company-minimum-prefix-length 1)
+   company-minimum-prefix-length 2)
   )
 
 (use-package company-box

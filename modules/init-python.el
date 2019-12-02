@@ -44,38 +44,35 @@
   (setenv "WORKON_HOME" (expand-file-name "~/miniconda3/envs/"))
   )
 
-(require 'f)
-(require 'subr-x)
+(eval-when-compile
+  (require 'f)
+  (require 'subr-x)
+  (require 'projectile nil t))
+
+(defun custom-lsp-setup-python ()
+  "Setup virtual env for Microsoft Python Language Server."
+  (let ((env_file (concat (projectile-project-root) ".conda-env")))
+    (if (f-exists? env_file)
+        (let ((venv_name (f-read env_file 'utf-8)))
+          (pyvenv-workon (string-trim venv_name))
+          ;; (message (executable-find lsp-python-executable-cmd))
+          )
+      (progn
+        (message "No conda env file found.")
+        (setq lsp-python-executable-cmd "python3")
+        (setq doom-modeline-env-python-executable "python3")))
+    (lsp-deferred)
+    (push '(company-lsp
+            :with company-tabnine :separate)
+          company-backends)))
 
 (use-package lsp-python-ms
   :ensure t
   :after python
+  :hook (python-mode . custom-lsp-setup-python)
   :init
   (setq lsp-python-ms-parse-dot-env-enabled nil)
-  :demand
-  :config
-  (require 'projectile nil t)
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (let ((env_file (concat (projectile-project-root) ".conda-env")))
-                (if (f-exists? env_file)
-                    (let ((venv_name (f-read env_file 'utf-8)))
-                      (pyvenv-workon (string-trim venv_name))
-                      ;; (message (executable-find lsp-python-executable-cmd))
-                      (lsp-deferred)
-                      (push '(company-lsp
-                              :with company-tabnine :separate)
-                            company-backends)
-                      )
-                  (progn
-                    (message "No conda env file found.")
-                    (setq lsp-python-executable-cmd "python3")
-                    (setq doom-modeline-env-python-executable "python3")
-                    (lsp-deferred)
-                    (push '(company-lsp
-                            :with company-tabnine :separate)
-                          company-backends)
-                    ))))))
+  :demand)
 
 (provide 'init-python)
 

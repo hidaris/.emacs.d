@@ -93,20 +93,6 @@
   :config
   (editorconfig-mode 1))
 
-(use-package paredit
-  :ensure t
-  :defer t
-  :init
-  (progn
-    (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-    (add-hook 'scheme-mode-hook #'paredit-mode)
-    (add-hook 'racket-mode-hook #'paredit-mode)
-    (add-hook 'racket-repl-mode-hook #'paredit-mode)
-    (add-hook 'lisp-mode-hook #'paredit-mode)
-    (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
-    (add-hook 'ielm-mode-hook #'paredit-mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)))
-
 (use-package smartparens
   :ensure t
   :hook (prog-mode . smartparens-mode)
@@ -115,7 +101,9 @@
          ("C-<left>"  . sp-backward-barf-sexp)
          ("C-<right>" . sp-backward-slurp-sexp))
   :config
-  (require 'smartparens-config))
+  (require 'smartparens-config)
+  (sp-use-paredit-bindings)
+  (smartparens-global-strict-mode))
 
 (use-package paren
   :config

@@ -1,4 +1,5 @@
-(use-package company               ; Graphical (auto-)completion
+;; Graphical (auto-)completion
+(use-package company
   :ensure t
   :hook
   (after-init . global-company-mode)
@@ -8,12 +9,12 @@
         ("C-p" . company-select-previous))
   :config
   (validate-setq
-   company-idle-delay .5
+   company-idle-delay 0.1
    company-tooltip-align-annotations t
    company-tooltip-flip-when-above t
    ;; Easy navigation to candidates with M-<n>
    company-show-numbers t
-   company-minimum-prefix-length 2)
+   company-minimum-prefix-length 1)
   )
 
 (use-package company-box

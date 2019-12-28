@@ -40,6 +40,7 @@
 
 (use-package recentf
   :defer t
+  :hook (after-init . recentf-mode)
   :config
   (validate-setq
    recentf-save-file (expand-file-name "recentf" hidaris-savefile-dir)
@@ -100,9 +101,12 @@
 (use-package super-save
   :ensure t
   :defer t
+  :custom
+  (super-save-auto-save-when-idle t)
+  (auto-save-default nil)
+  (make-backup-files nil)
   :config
-  (super-save-mode +1)
-  :diminish super-save-mode)
+  (super-save-mode +1))
 
 (use-package undo-tree
   :ensure t

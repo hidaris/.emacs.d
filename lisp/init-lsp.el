@@ -4,7 +4,6 @@
   ;; fix pyls problem
   ;; (setq create-lockfiles nil)
   (setq lsp-prefer-flymake nil
-        lsp-auto-guess-root t
         lsp-message-project-root-warning t
         lsp-enable-snippet nil)
   )
@@ -16,9 +15,11 @@
   (("M-." . lsp-ui-peek-find-definitions)
    ("M-?" . lsp-ui-peek-find-references))
   :init
-  (setq lsp-ui-sideline-ignore-duplicate t)
-  (setq lsp-ui-sideline-enable nil)
-  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-sideline-ignore-duplicate t
+        lsp-ui-sideline-enable nil
+        lsp-ui-doc-enable nil
+        ;; lsp-eldoc-render-all nil
+        )
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :config
   ;; (setq lsp-enable-completion-at-point t
@@ -43,9 +44,19 @@
   (add-to-list 'company-backends #'company-lsp)
   )
 
-(use-package company-tabnine
-  :ensure t
-  :defer t)
+;; (use-package company-tabnine
+;;   :ensure t
+;;   :defer t
+;;   :custom
+;;   (company-tabnine-max-num-results 9)
+;;   :hook
+;;   (lsp-after-open . (lambda ()
+;;                       (setq company-tabnine-max-num-results 3)
+;;                       (push '(company-lsp :with company-tabnine :separate)
+;;                             company-backends)))
+;;   :config
+;;   ;; Enable TabNine on default
+;;   (add-to-list 'company-backends #'company-tabnine))
 
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

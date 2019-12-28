@@ -109,20 +109,11 @@
 
 (use-package smartparens
   :ensure t
+  :hook (prog-mode . smartparens-mode)
   :bind (;; A fill paragraph in strict mode
          ("M-q"       . sp-indent-defun)
          ("C-<left>"  . sp-backward-barf-sexp)
          ("C-<right>" . sp-backward-slurp-sexp))
-  :init
-  (add-hook 'web-mode-hook #'smartparens-mode)
-  (add-hook 'restclient-mode #'smartparens-mode)
-  (add-hook 'python-mode-hook #'smartparens-mode)
-  (add-hook 'go-mode-hook #'smartparens-mode)
-  (add-hook 'ruby-mode-hook #'smartparens-mode)
-  (add-hook 'rust-mode-hook #'smartparens-mode)
-  (add-hook 'idris-mode-hook #'smartparens-mode)
-  (add-hook 'idris-repl-mode-hook #'smartparens-mode)
-  (add-hook 'inferior-python-mode #'smartparens-mode)
   :config
   (require 'smartparens-config))
 

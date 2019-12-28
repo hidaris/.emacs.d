@@ -33,23 +33,21 @@
   :ensure t
   :mode (("\\.go\\'" . go-mode))
   :config
+  (message (executable-find "gopls"))
   (add-hook 'go-mode-hook
           (lambda ()
             (add-hook 'before-save-hook 'gofmt-before-save)
             (setq tab-width 4)
             (setq indent-tabs-mode t)
-            (lsp-deferred)
-            ;; (push '(company-lsp :with company-tabnine :separate)
-            ;;       company-backends)
-            ))
+            (lsp-deferred)))
 
   ;; Format with `goimports' if possible, otherwise using `gofmt'
   (when (executable-find "goimports")
     (setq gofmt-command "goimports"))
 
-  (use-package go-eldoc
-    :ensure t
-    :hook (go-mode . go-eldoc-setup))
+  ;; (use-package go-eldoc
+  ;;   :ensure t
+  ;;   :hook (go-mode . go-eldoc-setup))
 
   (use-package go-guru
     :ensure t

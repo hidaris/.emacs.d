@@ -61,18 +61,12 @@
         (message "No conda env file found.")
         (setq lsp-python-executable-cmd "python3")
         (setq doom-modeline-env-python-executable "python3")))
-    (lsp-deferred)
-    (push '(company-lsp
-            :with company-tabnine :separate)
-          company-backends)))
+    (lsp-deferred)))
 
-(use-package lsp-python-ms
+(use-package lsp-mode
   :ensure t
   :after python
-  :hook (python-mode . custom-lsp-setup-python)
-  :init
-  (setq lsp-python-ms-parse-dot-env-enabled nil)
-  :demand)
+  :hook (python-mode . custom-lsp-setup-python))
 
 (provide 'init-python)
 

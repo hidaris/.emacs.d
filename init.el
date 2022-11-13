@@ -33,8 +33,11 @@
 
 (require 'package)
 
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+             '("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
+
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 (package-initialize)
@@ -450,6 +453,13 @@ Start `ielm' if it's not already running."
              (selected-file (completing-read "Select article: " files nil t)))
         (insert (format "{%% post_url %s %%}" selected-file))))))
 
+(use-package pangu-spacing
+  :ensure t
+  :config
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (set (make-local-variable 'pangu-spacing-real-insert-separtor) t))))
+
 (use-package yaml-mode
   :ensure t)
 
@@ -698,12 +708,14 @@ Start `ielm' if it's not already running."
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-)
+  )
 
 (use-package eglot
   :ensure t
   :hook ((js-mode . eglot-ensure)
-         (python-mode . eglot-ensure))
+         (python-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure))
   :bind (("C-c l a" . eglot-code-actions)
          ("C-c l r" . eglot-rename)
          ("C-c l f" . eglot-format)

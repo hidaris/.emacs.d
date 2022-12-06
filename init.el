@@ -414,6 +414,7 @@ Start `ielm' if it's not already running."
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'paren-face-mode)
+  (add-hook 'racket-repl-mode-hook #'paren-face-mode)
   (diminish 'paren-face-mode))
 
 (use-package exec-path-from-shell
@@ -610,17 +611,16 @@ Start `ielm' if it's not already running."
          ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
          ;; Custom M-# bindings for fast register access
          ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("M-'" . consult-register-store) ;; orig. abbrev-prefix-mark (unrelated)
          ("C-M-#" . consult-register)
          ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
+         ("M-y" . consult-yank-pop) ;; orig. yank-pop
          ;; M-g bindings (goto-map)
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g f" . consult-flymake)     ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)   ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line) ;; orig. goto-line
+         ("M-g o" . consult-outline)     ;; Alternative: consult-org-heading
          ("M-g m" . consult-mark)
          ("M-g k" . consult-global-mark)
          ("M-g i" . consult-imenu)
@@ -640,13 +640,13 @@ Start `ielm' if it's not already running."
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("C-c f s" . consult-line)                ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ("M-e" . consult-isearch-history)   ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history) ;; orig. isearch-edit-string
+         ("C-c f s" . consult-line)          ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)      ;; needed by consult-line to detect isearch
          ;; Minibuffer history
          :map minibuffer-local-map
-         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-s" . consult-history)  ;; orig. next-matching-history-element
          ("M-r" . consult-history))                ;; orig. previous-matching-history-element
 
   ;; Enable automatic preview at point in the *Completions* buffer. This is
@@ -682,13 +682,13 @@ Start `ielm' if it's not already running."
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
   (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
+   consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key (kbd "M-."))
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key (kbd "M-.")
+   :preview-key '(:debounce 0.4 any))
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
@@ -710,7 +710,7 @@ Start `ielm' if it's not already running."
   ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
   ;;;; 4. locate-dominating-file
   ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-  )
+)
 
 (use-package eglot
   :ensure t
@@ -862,6 +862,9 @@ Start `ielm' if it's not already running."
   (add-hook 'racket-mode-hook
             (lambda ()
               (define-key racket-mode-map (kbd "<f5>") 'racket-run-and-switch-to-repl)))
+  (add-hook 'racket-repl-mode-hook
+            (lambda ()
+              (local-set-key (kbd "C-<return>") #'racket-repl-submit)))
   (put 'fresh 'racket-indent-function 1))
 
 (use-package vterm
